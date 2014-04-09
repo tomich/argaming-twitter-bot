@@ -4,13 +4,17 @@ import requests
 import tweepy
 import time
 
-access_token = 'lala'
-access_token_secret = 'lala'
-consumer_key = 'lala'
-consumer_secret = 'lala'
+access_token = 'abc123'
+access_token_secret = 'abc123'
+consumer_key = 'abc123'
+consumer_secret = 'abc123'
+print time.strftime('%X %x %Z')
 
+def reloj():
+        return time.strftime('%X')
+        
 def setup_connection_reddit(subreddit):
-	print "[bot] setting up connection with Reddit"
+	print reloj() + "[bot] setting up connection with Reddit"
 	r = praw.Reddit('yasoob_python reddit twitter bot '
 				'monitoring %s' %(subreddit)) 
 	subreddit = r.get_subreddit(subreddit)
@@ -19,12 +23,12 @@ def setup_connection_reddit(subreddit):
 def tweet_creator(subreddit_info):
 	post_dict = {}
 	post_ids = []
-	print "[bot] Getting posts from Reddit"
+	print reloj() + "[bot] Getting posts from Reddit"
 	for submission in subreddit_info.get_hot(limit=20):
                 # strip_title function is defined later
 		post_dict[strip_title(submission.title)] = submission.url
 		post_ids.append(submission.id)
-	print "[bot] Generating short link using goo.gl"
+	print reloj() + "[bot] Generating short link using goo.gl"
 	mini_post_dict = {}
 	for post in post_dict:
 		post_title = post
@@ -67,7 +71,7 @@ def tweeter(post_dict, post_ids):
 	for post, post_id in zip(post_dict, post_ids):
 		found = duplicate_check(post_id)
 		if found == 0:
-			print "[bot] Posting this link on twitter"
+			print reloj() + "[bot] Posting this link on twitter"
 			print post+" "+post_dict[post]+" #Argaming"
 			api.update_status(post+" "+post_dict[post]+" #Agaming")
 			add_id_to_file(post_id)
@@ -81,3 +85,6 @@ def main():
 	tweeter(post_dict, post_ids)			
 if __name__ == '__main__':
 	main()
+
+print "=========================="
+
